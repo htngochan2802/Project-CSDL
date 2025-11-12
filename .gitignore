@@ -1,0 +1,12 @@
+# Môi trường Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# File bí mật (Rất quan trọng)
+*.env
+
+# Cấu hình HĐH
+.DS_Store
+Thumbs.db
