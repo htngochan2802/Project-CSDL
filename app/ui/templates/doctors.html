@@ -1,1 +1,70 @@
+{% extends "layout.html" %}
 
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Quản lý Bác sĩ</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+        <i class="fas fa-plus"></i> Thêm Bác sĩ
+    </button>
+</div>
+
+<form method="GET" action="/doctors" class="row g-3 mb-4">
+    <div class="col-auto">
+        <input type="text" class="form-control" name="search" placeholder="Tìm tên hoặc chuyên khoa..." value="{{ search_keyword }}">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Tìm kiếm</button>
+    </div>
+</form>
+
+<table class="table table-striped table-hover shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Họ tên Bác sĩ</th>
+            <th>Chuyên khoa</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in doctors %}
+        <tr>
+            <td>{{ d.DoctorID }}</td>
+            <td class="fw-bold">{{ d.DoctorName }}</td>
+            <td><span class="badge bg-info text-dark">{{ d.Specialty }}</span></td>
+            <td>
+                <a href="/doctors/edit/{{ d.DoctorID }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                <a href="/doctors/delete/{{ d.DoctorID }}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa Bác sĩ này?');"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="modal fade" id="addDoctorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/doctors/add" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Bác sĩ mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Họ và Tên</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Chuyên khoa</label>
+                        <input type="text" name="specialty" class="form-control" placeholder="Ví dụ: Tim mạch, Nhi khoa..." required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
