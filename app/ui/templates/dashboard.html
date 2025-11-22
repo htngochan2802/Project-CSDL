@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard Tổng quan</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Bệnh nhân</h5>
+                <p class="card-text display-4">{{ kpis.total_patients }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Bác sĩ</h5>
+                <p class="card-text display-4">{{ kpis.total_doctors }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Phiên điều trị</h5>
+                <p class="card-text display-4">{{ kpis.total_sessions }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Ca chi phí cao</h5>
+                <p class="card-text display-4">{{ kpis.high_cost_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header">Top 5 Liệu trình phổ biến nhất</div>
+            <div class="card-body">
+                <canvas id="treatmentChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header">Thống kê nhanh</div>
+            <div class="card-body">
+                <p><strong>Chi phí TB:</strong> {{ "{:,.0f}".format(kpis.avg_cost) }} VND</p>
+                <hr>
+                <p class="text-muted">Hệ thống đang quản lý dữ liệu khám chữa bệnh theo tiêu chuẩn 3NF.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Lấy dữ liệu từ Python truyền sang (Jinja2)
+    const labels = {{ chart_labels | tojson }};
+    const data = {{ chart_data | tojson }};
+
+    const ctx = document.getElementById('treatmentChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượt thực hiện',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}
