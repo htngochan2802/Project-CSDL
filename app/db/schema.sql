@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS HospitalDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS hospital_patient_manager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE HospitalDB;
+USE hospital_patient_manager;
 
 CREATE TABLE Patients (
     PatientID INT PRIMARY KEY AUTO_INCREMENT,
@@ -36,3 +36,4 @@ CREATE INDEX idx_session_patient ON TreatmentSessions(PatientID);
 CREATE INDEX idx_session_doctor ON TreatmentSessions(DoctorID);
 CREATE INDEX idx_session_treatment ON TreatmentSessions(TreatmentID);
 CREATE INDEX idx_session_date ON TreatmentSessions(TreatmentDate);
+
